@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 
 type PageProps = {
     params: {
@@ -19,7 +20,7 @@ type SearchResults = {
 
 const search = async (searchTerm: string) => {
     const res = await fetch(
-        `https://serpapi.com/search.json?q=what+is+${searchTerm}&api_key=${process.env.API_KEY}`
+        `https://serpapi.com/search.json?q=allintitle:what+is+${searchTerm}&api_key=${process.env.API_KEY}`
     )
 
         const data: SearchResults = await res.json()
@@ -36,10 +37,13 @@ const search = async (searchTerm: string) => {
             
             <ol className="space-y-5 p-5">
                 {searchResults.organic_results.map((result) => (
+                    
                     <li key={result.position} className="list-decimal">
-                        <p className="font-bold">{result.title}</p>
-                        <p>{result.snippet}</p>
+                        <Link href={result.link}><p className="font-bold text-blue-500">{result.title}</p></Link>
+                        <Link href={result.link}><p className="text-blue-500">{result.link}</p></Link>
+                        <Link href={result.link}><p>{result.snippet}</p></Link>
                     </li>
+                    
                 ))}
                 </ol>
         </div>
